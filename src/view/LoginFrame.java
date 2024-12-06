@@ -61,14 +61,16 @@ public class LoginFrame extends JFrame implements ActionListener {
         // 拿到输入的用户名密码
         String usernameString = username.getText();
         String passwordString = String.valueOf(this.password.getPassword());
+        String bosspassword=bossload.getText();
         // 判断输入为空时弹框警告
-        if (usernameString.trim().length() == 0 || passwordString.trim().length() == 0) {
+        if ((usernameString.trim().length() == 0 || passwordString.trim().length() == 0)&&bosspassword.trim().length()==0) {
             JOptionPane.showMessageDialog(null, "用户名和密码不能为空！", "警告", JOptionPane.WARNING_MESSAGE);
         } else {
             // 将用户名密码送入dao层，进行查验
             boolean loginCheck = new UserDao().loginCheck(usernameString, passwordString);
-            if (bossload.getText()==transit.getKey()) {
+            if (bosspassword.equals(transit.getKey())) {
                 loginCheck=true;
+                transit.setBoss(true);
             }
             // 查到，登陆成功
             if (loginCheck) {

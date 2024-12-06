@@ -150,7 +150,7 @@ public class User {
 
     /* 售出表 */
     public User(Integer id, Integer Deal_order, String sort, String Product_name, Integer Amount, Integer Unite,
-            Integer Allcost, Integer Deliver_order, Date Deal_date) {
+            Integer Allcost, Integer Deliver_order, Date Deal_date, Integer Client_id) {
         setId(id);
         setDeal_order(Deal_order);
         setSort(sort);
@@ -160,6 +160,7 @@ public class User {
         setAllcost(Allcost);
         setDeliver_order(Deliver_order);
         setDeal_date(Deal_date);
+        setClient_id(Client_id);
     }
 
     /* 客户和供货商表 */
@@ -270,7 +271,9 @@ public class User {
                     case 7:
                         return getDeliver_order();
                     case 8:
-                        return getDeliver_date();
+                        return getDeal_date();
+                    case 9:
+                        return getClient_id();
                 }
             }
             case 4: {

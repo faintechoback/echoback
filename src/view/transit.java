@@ -22,7 +22,7 @@ public class transit {
     public static void setBoss(boolean boss) {
         transit.boss = boss;
     }
-
+    
     //private
     //
     public static int getPitch() {
@@ -64,7 +64,7 @@ public class transit {
             case 2:
                 return "UPDATE lb_tabl_deliver SET `Supply_id`=?,`Deliver_order`=?,sort=?,`Product_name`=?,`Amount`=?,`Unite`=?,`Allcost`=?,`Deliver_date`=?";
             case 3:
-                return "UPDATE lb_tabl_deal SET `Deliver_order`=?,sort=?,`Product_name`=?,`Amount`=?,`Unite`=?,`Allcost`=?,`Deliver_order`=?,`Deal_date`=?";
+                return "UPDATE lb_tabl_deal SET `Deliver_order`=?,sort=?,`Product_name`=?,`Amount`=?,`Unite`=?,`Allcost`=?,`Deliver_order`=?,`Deal_date`=? ,'Client_id' =?";
             case 4:
                 return "UPDATE lb_tabl_client SET `Client_id`=?,`Client_name`=?,`Client_place`=?";
             case 5:
@@ -115,7 +115,8 @@ public class transit {
                             Integer.parseInt(rs.getString(6)),
                             Integer.parseInt(rs.getString(7)),
                             Integer.parseInt(rs.getString(8)),
-                            rs.getDate(9));
+                            rs.getDate(9),
+                            Integer.parseInt(rs.getString(10)));
                     return person;
                 }
                 case 4: {
@@ -176,7 +177,7 @@ public class transit {
                 return columnNames2;
             }
             case 3: {
-                String[] columnNames3 = { "序号", "售出订单", "商品种类", "商品名称", "数量", "单价", "总价", "购入时间", "售出时间" };
+                String[] columnNames3 = { "序号", "售出订单", "商品种类", "商品名称", "数量", "单价", "总价", "购入时间", "售出时间","客户id" };
 
                 return columnNames3;
             }
@@ -202,11 +203,11 @@ public class transit {
                 return " lb_tabl_imp(sort,`Product_name`,`Amount`,`Unite`,`Allcost`,`Deliver_date`,`Deliver_order`,`Import_date`,`Product_sale`)"
                         + "values(?,?,?,?,?,?,?,?,?)";
             case 2:
-                return " lb_tabl_deliver(Supply_id,Deliver_order,sort,Product_name,Amount,Unite,Allocst,De;iver_date)"
+                return " lb_tabl_deliver(Supply_id,Deliver_order,sort,Product_name,Amount,Unite,Allocst,Deliver_date)"
                         + "values(?,?,?,?,?,?,?,?)";
             case 3:
-                return " lb_tabl_deal(Deal_order,sort,Product_name,Amount,Unite,Allocst,Deliver_order,Deal_date)"
-                        + "values(?,?,?,?,?,?,?,?)";
+                return " lb_tabl_deal(Deal_order,sort,Product_name,Amount,Unite,Allocst,Deliver_order,Deal_date,Client_id)"
+                        + "values(?,?,?,?,?,?,?,?,?,?)";
             case 4:
                 return " lb_tabl_client(Client_id,Client_name,Client_place)" + "values(?,?,?)";
             case 5:
@@ -227,7 +228,7 @@ public class transit {
                 return columnNames;
             }
             case 3: {
-                String[] columnNames = { "id", "Deal_order", "sort", "Product_name", "Product_sale", "Deliver_order" };
+                String[] columnNames = { "id", "Deal_order", "Client_id","sort", "Product_name", "Product_sale", "Deliver_order","Client_id"};
                 return columnNames;
             }
             case 4: {
