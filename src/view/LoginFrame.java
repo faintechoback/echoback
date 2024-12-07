@@ -23,7 +23,7 @@ public class LoginFrame extends JFrame implements ActionListener {
     Mybutton submit;
     Mybutton enter;
     Mybutton cancel;
-    
+
 
     String name_user = "请输入用户名";
     String key = "密匙";
@@ -173,7 +173,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         Alljpanel.setBorder(new RoundedBorder(50));// 保留边缘的圆角
 
         nextjpanel.setBounds(20, 56, 360, 330);
-        jPanel_boss.setBounds(20, 56, 360, 330);
+        jPanel_boss.setBounds(20, 100, 360, 330);
 
         landall.setBounds(20, 3, 360, 50);
         keyland.setBounds(13, 0, 130, 50);
