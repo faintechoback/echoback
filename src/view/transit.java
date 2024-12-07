@@ -23,6 +23,7 @@ public class transit {
         transit.boss = boss;
     }
     
+    
     //private
     //
     public static int getPitch() {

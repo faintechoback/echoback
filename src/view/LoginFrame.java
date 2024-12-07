@@ -24,6 +24,9 @@ public class LoginFrame extends JFrame implements ActionListener {
     Mybutton enter;
     Mybutton cancel;
 
+    String name_user = "请输入用户名";
+    String key = "密匙";
+
     // 登录界面构造
     public LoginFrame() throws HeadlessException {
         super("进销存管理系统");
@@ -61,16 +64,30 @@ public class LoginFrame extends JFrame implements ActionListener {
         // 拿到输入的用户名密码
         String usernameString = username.getText();
         String passwordString = String.valueOf(this.password.getPassword());
-        String bosspassword=bossload.getText();
+        String bosspassword = bossload.getText();
+        boolean employerError = bosspassword.trim().equals(key);
+        boolean employeeError = usernameString.trim().equals(name_user) || passwordString.trim().length() == 0;
         // 判断输入为空时弹框警告
-        if ((usernameString.trim().length() == 0 || passwordString.trim().length() == 0)&&bosspassword.trim().length()==0) {
-            JOptionPane.showMessageDialog(null, "用户名和密码不能为空！", "警告", JOptionPane.WARNING_MESSAGE);
+        // trim的用法：处理输入数据，去除前后的空格，换行，制表符
+        if (employeeError || employerError) {
+            // 虽然可以优化，但这样更为清晰
+            if (employerError) {
+                //需要先判断employer因为在实际中会发现，只要不动password内的内容employee都是永true，
+                //可以通过修改employee判断依据，但是此处选择省事，警示一下
+                //同时
+                JOptionPane.showMessageDialog(null, "密匙不能为空！可尝试密码输入", "警告", JOptionPane.WARNING_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "用户名和密码不能为空！", "警告", JOptionPane.WARNING_MESSAGE);
+            } // 无论如何都不会执行这几句，因为存在提示文本，，，，已解决，见日志
+
+            //未完全解决
         } else {
             // 将用户名密码送入dao层，进行查验
             boolean loginCheck = new UserDao().loginCheck(usernameString, passwordString);
             if (bosspassword.equals(transit.getKey())) {
-                loginCheck=true;
+                loginCheck = true;
                 transit.setBoss(true);
+
             }
             // 查到，登陆成功
             if (loginCheck) {
@@ -101,46 +118,49 @@ public class LoginFrame extends JFrame implements ActionListener {
         JPanel jPanel_down = new JPanel();
         JPanel nextjpanel = new JPanel();
         JPanel landall = new JPanel();
-        bossload = new Myjtextfield("       密匙       ");
+        bossload = new Myjtextfield(key);
 
+        landbutton passwordland = new landbutton();
         landbutton keyland = new landbutton();
-        landbutton wxland = new landbutton();
 
         Alljpanel.setLayout(null);
         nextjpanel.setLayout(null);
         landall.setLayout(null);
 
-        username = new Myjtextfield("请输入用户名");
+        username = new Myjtextfield(name_user);
         username.setColumns(20);
         password = new Myjpassword();
         password.setColumns(20);
         password.setEchoChar('*');
 
-        keyland.setText("密码登陆");
-        wxland.setText("密匙登陆");
+        passwordland.setText("密码登陆");
+        keyland.setText("密匙登陆");
 
         // 用户名和密码字符和输入框加入第一个组件面板
         jPanel_up.setLayout(new GridLayout(3, 1));
+        jPanel_boss.setLayout(new GridLayout(5, 1));
         // jPanel_up.add(name);
         jPanel_up.add(username);
         // jPanel_up.add(passwordLabel);
         jPanel_up.add(password);
         username.setHorizontalAlignment(JTextField.CENTER);
         password.setHorizontalAlignment(JTextField.CENTER);
+        bossload.setHorizontalAlignment(JTextField.CENTER);
 
         // 两个按钮加入第二个组件面板
         jPanel_down.add(submit);
         jPanel_down.add(cancel);
 
         jPanel_boss.add(bossload);
+        jPanel_boss.add(Box.createHorizontalGlue());// 垂直胶水
         jPanel_boss.add(enter);
 
         nextjpanel.add(jPanel_down);
         nextjpanel.add(jPanel_up);
         // imagejpanel.add(imagelabel);
 
+        landall.add(passwordland);
         landall.add(keyland);
-        landall.add(wxland);
 
         Alljpanel.add(jPanel_boss);
         Alljpanel.add(nextjpanel);
@@ -155,8 +175,9 @@ public class LoginFrame extends JFrame implements ActionListener {
         jPanel_boss.setBounds(20, 56, 360, 330);
 
         landall.setBounds(20, 3, 360, 50);
-        wxland.setBounds(13, 0, 130, 50);
-        keyland.setBounds(216, 0, 130, 50);
+        keyland.setBounds(13, 0, 130, 50);
+        passwordland.setBounds(216, 0, 130, 50);
+
         bossload.setBounds(100, 175, 360, 75);
         enter.setBounds(175, 200, 100, 50);
 
@@ -178,18 +199,24 @@ public class LoginFrame extends JFrame implements ActionListener {
 
         // jPanel_boss.setBackground(Color.yellow);
         nextjpanel.setVisible(false);
-        keyland.addActionListener(new ActionListener() {
+
+        passwordland.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 nextjpanel.setVisible(true);
+                username.setText(name_user);
+                password.setText("");
                 jPanel_boss.setVisible(false);
+                bossload.setText(null);
             }
         });
-        wxland.addActionListener(new ActionListener() {
+        keyland.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 nextjpanel.setVisible(false);
+                username.setText(null);
                 jPanel_boss.setVisible(true);
+                bossload.setText(key);
             }
         });
         this.add(Alljpanel);

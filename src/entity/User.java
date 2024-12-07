@@ -275,7 +275,8 @@ public class User {
                     case 9:
                         return getClient_id();
                 }
-            }
+            } 
+            
             case 4: {
                 switch (col) {
                     case 0:

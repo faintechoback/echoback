@@ -12,9 +12,10 @@ public class clear {
 
     public static void verify() {
         for (Verify verify : verifys) {
-            verify.dispose();//对各个对象进行去除，实际上里面应该只有上一次创建的一个对象
+            verify.dispose();//！！！！这是各个对象的资源释放
         }
-        verifys.clear();//对列表元素的清除
+        //是否存在重复多余
+        verifys.clear();//！！！！对列表元素的清除，因此和上面的dispose并不冲突
         verifys.add(new Verify());//创建后添加
     }
 
@@ -28,6 +29,7 @@ public class clear {
 
     }
 
+    //winaction部分需要调用，因此需要返回值，进过修改后或许不需要，但是省事
     public static UserSearchFrame userSearchFrame() {
         for (UserSearchFrame userSearchFrame : userSearchFrames) {
             userSearchFrame.dispose();
