@@ -23,6 +23,7 @@ public class LoginFrame extends JFrame implements ActionListener {
     Mybutton submit;
     Mybutton enter;
     Mybutton cancel;
+    
 
     String name_user = "请输入用户名";
     String key = "密匙";
