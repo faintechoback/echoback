@@ -24,7 +24,6 @@ public class LoginFrame extends JFrame implements ActionListener {
     Mybutton enter;
     Mybutton cancel;
 
-
     String name_user = "请输入用户名";
     String key = "密匙";
 
@@ -40,6 +39,8 @@ public class LoginFrame extends JFrame implements ActionListener {
         submit = new Mybutton("确定");
         cancel = new Mybutton("取消");
         enter = new Mybutton("登陆");
+
+        enter.setFont(new Font("楷体", Font.PLAIN, 18));
 
         // 确定按钮绑定底下的actionPerformed方法
         submit.addActionListener(this);
@@ -67,28 +68,34 @@ public class LoginFrame extends JFrame implements ActionListener {
         String passwordString = String.valueOf(this.password.getPassword());
         String bosspassword = bossload.getText();
         boolean employerError = bosspassword.trim().equals(key);
-        boolean employeeError = usernameString.trim().equals(name_user) || passwordString.trim().length() == 0;
+        boolean employeeError = usernameString.trim().length() == 0 || passwordString.trim().length() == 0;
         // 判断输入为空时弹框警告
         // trim的用法：处理输入数据，去除前后的空格，换行，制表符
-        if (employeeError || employerError) {
-            // 虽然可以优化，但这样更为清晰
-            if (employerError) {
-                //需要先判断employer因为在实际中会发现，只要不动password内的内容employee都是永true，
-                //可以通过修改employee判断依据，但是此处选择省事，警示一下
-                //同时
-                JOptionPane.showMessageDialog(null, "密匙不能为空！可尝试密码输入", "警告", JOptionPane.WARNING_MESSAGE);
-            } else {
+        if (employeeError && employerError) {
+            /*
+             * 虽然可以优化，但这样更为清晰
+             * if (employerError) {
+             * 需要先判断employer因为在实际中会发现，只要不动password内的内容employee都是永true，
+             * 可以通过修改employee判断依据，但是此处选择省事，警示一下
+             * 同时
+             * 
+             * } else {
+             * 
+             * } 无论如何都不会执行这几句，因为存在提示文本，，，，已解决，见日志
+             * 
+             * 未完全解决
+             */
+            if (employeeError && bossload.getText().length()==0) {
                 JOptionPane.showMessageDialog(null, "用户名和密码不能为空！", "警告", JOptionPane.WARNING_MESSAGE);
-            } // 无论如何都不会执行这几句，因为存在提示文本，，，，已解决，见日志
-
-            //未完全解决
+            } else if (employerError && username.getText().length()==0) {
+                JOptionPane.showMessageDialog(null, "密匙不能为空！可尝试密码输入", "警告", JOptionPane.WARNING_MESSAGE);
+            }
         } else {
             // 将用户名密码送入dao层，进行查验
             boolean loginCheck = new UserDao().loginCheck(usernameString, passwordString);
             if (bosspassword.equals(transit.getKey())) {
                 loginCheck = true;
                 transit.setBoss(true);
-
             }
             // 查到，登陆成功
             if (loginCheck) {

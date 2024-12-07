@@ -17,7 +17,8 @@ public class Updated extends JDialog{
     public Updated() {
         List<Myjtextfield> textFields = new ArrayList<>();
         String []names = transit.judgement();
-        Object []value = new Object[names.length];
+        int length=transit.getSelection()==1 ? names.length-1: names.length;
+        Object []value = new Object[length];
         UserDao update=new UserDao();
         Object []original=update.getobject();//原始数据
 
@@ -27,7 +28,7 @@ public class Updated extends JDialog{
             clear.verify();
             this.dispose();
         }
-        for (int n = 1; n < names.length; n++) {
+        for (int n = 1; n < length; n++) {
             textFields.add(new Myjtextfield(names[n]));
         }
         this.add(Box.createVerticalGlue()); //垂直胶水
@@ -59,9 +60,9 @@ public class Updated extends JDialog{
 
         
         this.add(submit);
-        this.setSize(new Dimension(700, 60 * names.length));
+        this.setSize(new Dimension(transit.getSelection()>3 ? 350:700, 60 * length));
         this.setTitle("修改信息");
-        setLayout(new GridLayout(names.length + 2, 1));
+        setLayout(new GridLayout(length + 1, 1));
         setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setResizable(false);
